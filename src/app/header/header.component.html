@@ -1,0 +1,14 @@
+<nav class="navbar">
+    <a class="navbar-brand">PictureID</a>
+  <span class="left-items">
+   <a routerLink="/" class="navs">Home</a>
+    <a routerLink="/profile" class="navs">Profile</a>
+    </span>
+    <span class="right-items" *ngIf="!isLogedIn">
+      <a routerLink="/login" class="navs login">Login</a>
+      <a routerLink="/register" class="navs reg">Register</a>
+    </span>
+  <span class="right-items" *ngIf="isLogedIn">
+      <a routerLink="/home" class="navs reg">Logout</a>
+    </span>
+</nav>

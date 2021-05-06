@@ -1,0 +1,18 @@
+.col-sm-8{
+  text-align: -webkit-left;
+}
+
+.input-auth {
+  width: 80%;
+  font: 14px Futura,Helvetica,sans-serif;
+}
+
+.err {
+  padding-left: 15px;
+}
+
+.form-check-label{
+  font-weight: normal;
+  padding-left: 5px;
+}
+

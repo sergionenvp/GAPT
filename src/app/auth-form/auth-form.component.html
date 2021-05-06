@@ -1,0 +1,13 @@
+<div class="main">
+  <h1 class="action">Confirm Registration</h1>
+  <p class="auth-text">To complete registration enter 5-digit authorization code sent to the provided e-mail address or phone number</p>
+  <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div class="form-group">
+      <input type="number" placeholder="Your code.." pattern="\d{5,5}" autocomplete="off"
+             required class="input-auth" ngModel name="code" #code="ngModel">
+      <span class="err" *ngIf="!code.valid && code.touched">The code must contain only 5 digits. Please, try again!</span>
+      <span class="err" *ngIf="codeIncorrect">Entered number does not match the authorization code. Please, try again!</span>
+    </div>
+    <button class="btn-auth" type="submit" [disabled]="!f.valid">Confirm Code</button>
+  </form>
+</div>

@@ -1,0 +1,40 @@
+.navbar {
+  background-color: darkseagreen;
+  border: 1px solid goldenrod;
+}
+
+.navbar-brand {
+  padding-left: 50px;
+  color: goldenrod;
+  font: 26px Futura,Helvetica,sans-serif;
+}
+
+.nav {
+  background-color: darkseagreen;
+  border: 1px solid goldenrod;
+}
+
+.navbar-brand {
+  color: palegoldenrod;
+  font: 26px Futura,Helvetica,sans-serif;
+}
+
+.right-items{
+  float: right;
+  padding: 15px 50px;
+}
+
+.navs{
+  color: darkslategrey;
+  font: 20px Futura,Helvetica,sans-serif;
+  margin: 0 10px;
+  font-size: 1.5vw;
+}
+
+.left-items{
+  float: bottom;
+  bottom: 25%;
+  position: absolute;
+  padding-left: 10px;
+}
+
