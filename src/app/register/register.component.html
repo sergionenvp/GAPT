@@ -1,0 +1,35 @@
+<div class="main">
+  <h1 class="action">Registration</h1>
+  <p class="auth-text">Upon submitting this form you will receive an e-mail with the authorization code.
+    To complete registration enter the received code in the corresponding field on the next screen.</p>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div class="form-group">
+      <label for="email"></label>
+      <input type="email" id= "email" placeholder="Your e-mail.."
+             required autocomplete="off" email
+             maxlength="50" class="input-auth" ngModel name="email" #email="ngModel">
+      <span class="err" *ngIf="!email.valid && email.touched">Please, enter a valid e-mail!</span>
+    </div>
+    <div class="form-group">
+      <label for="phone"></label>
+      <input type="tel" id= "phone" placeholder="Your phone.."
+             autocomplete="off" pattern="^\+*(\d{3})*[0-9,\-]{8,}"
+             class="input-auth" ngModel name="tel" #tel="ngModel">
+      <span class="err" *ngIf="!tel.valid && tel.touched">Please, enter a valid phone number!</span>
+    </div>
+    <div class="form-group">
+      <label for="pass"></label>
+      <input type="password" id= "pass" placeholder="Your password.."
+             required autocomplete="off" minlength="6"
+             class="input-auth" ngModel name="pass" #pass="ngModel">
+      <span class="err" *ngIf="!pass.valid && pass.touched">Valid password should contain at least 6 characters</span>
+    </div>
+    <div class="form-group">
+      <label for="pic" class="input-auth picture" *ngIf="file.pristine">Upload Your Picture..</label>
+      <label for="pic" class="input-auth picture" *ngIf="file.dirty">Picture Uploaded</label>
+      <input type="file" id= "pic" style="display: none"
+             accept="image/*" ngModel name="file" #file="ngModel">
+    </div>
+    <button class="btn-auth" type="submit" [disabled]="!f.valid">Submit Form</button>
+  </form>
+</div>
