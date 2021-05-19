@@ -10,6 +10,5 @@ import {AccountService} from './account.service';
 export class AppComponent {
   title = 'GAPT';
 
-  constructor(private accountService: AccountService) {
-  }
+  constructor(private accountService: AccountService) {}
 }

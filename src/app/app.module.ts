@@ -11,6 +11,9 @@ import {AppRoutingModule} from './app-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import {HttpClientModule} from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+import { BnNgIdleService } from 'bn-ng-idle';
+
 
 @NgModule({
   declarations: [
@@ -28,7 +31,7 @@ import {HttpClientModule} from '@angular/common/http';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [CookieService, BnNgIdleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,42 +8,47 @@
     <div class="col-sm-8" *ngIf="!settings">
       <p class="auth-text">Email: {{ mail }}</p>
       <p class="auth-text">Phone number: {{ phone }}</p>
-      <p class="auth-text">Password: {{password}}</p>
     </div>
-    <div class="col-sm-8" *ngIf="settings">
-      <form #f="ngForm" (ngSubmit)="onSaveSet(f)">
+    <form *ngIf="settings" #f="ngForm" (ngSubmit)="onSaveSet(f)">
+    <div class="col-sm-8">
         <div class="form-group">
           <div class="row">
             <p class="auth-text" style="font-weight: bold">Set Two-Factor Authentication</p>
             <div class="col-sm-10">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="radio" id="radio1" value="1" checked>
+                <input class="form-check-input" type="radio" name="auth_mode" id="radio1" value="1" [(ngModel)]="authMode">
                 <label class="form-check-label" for="radio1">
                   Email
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="radio" id="radio2" value="2">
+                <input class="form-check-input" type="radio" name="auth_mode" id="radio2" value="2" [(ngModel)]="authMode">
                 <label class="form-check-label" for="radio2">
+                  Picture
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="auth_mode" id="radio3" value="3" [(ngModel)]="authMode">
+                <label class="form-check-label" for="radio3">
                   Phone
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="radio" id="radio3" value="3">
-                <label class="form-check-label" for="radio3">
+                <input class="form-check-input" type="radio" name="auth_mode" id="radio4" value="4" [(ngModel)]="authMode">
+                <label class="form-check-label" for="radio4">
                   Turn off two-factor authentication
                 </label>
               </div>
             </div>
           </div>
         </div>
-      </form>
     </div>
+        <button class="btn-home" (click)="settings = false;" *ngIf="settings">Return to Profile</button>
+        <button class="btn-home" type="submit" *ngIf="settings">Save Settings</button>
+    </form>
   </div>
     <button class="btn-home" (click)="editMode = true;" *ngIf="!settings">Edit Profile</button>
     <button class="btn-home" (click)="settings = true;" *ngIf="!settings">Settings</button>
-    <button class="btn-home" (click)="settings = false;" *ngIf="settings">Return to Profile</button>
-    <button class="btn-home" type="submit" *ngIf="settings">Save Settings</button>
 </div>
 
   <form *ngIf="editMode" #f="ngForm" (ngSubmit)="onSubmit(f)">
@@ -53,8 +58,8 @@
         <div class="form-group">
           <label for="pic" class="input-auth picture" *ngIf="file.pristine">Upload New Picture..</label>
           <label for="pic" class="input-auth picture" *ngIf="file.dirty">New Picture Uploaded</label>
-          <input type="file" id= "pic" style="display: none"
-                 accept="image/*" ngModel name="file" #file="ngModel">
+          <input type="file" id= "pic" style="display: none" (click)="imageChanged = true"
+                 accept="image/*" ngModel name="image" #file="ngModel">
         </div>
         <div class="form-group">
           <button class="input-auth picture" (click)="onPicDelete()">Delete Profile Picture</button>
@@ -63,23 +68,23 @@
       <div class="col-sm-8">
         <p class="auth-text">Email:</p>
         <div class="form-group">
-          <input type="email" id= "email" placeholder="{{ mail }}"
+          <input type="email" id="email" placeholder="{{ mail }}"
           autocomplete="off" email maxlength="50" class="input-auth" ngModel name="email" #email="ngModel">
           <span class="err" *ngIf="!email.valid && email.touched">Please, enter a valid e-mail!</span>
         </div>
         <p class="auth-text">Phone number:</p>
         <div class="form-group">
-          <input type="tel" id= "phone" placeholder="{{ phone }}"
+          <input type="tel" id="phone" placeholder="{{ phone }}"
                  autocomplete="off" pattern="^\+*(\d{3})*[0-9,\-]{8,}"
-                 class="input-auth" ngModel name="tel" #tel="ngModel">
+                 class="input-auth" ngModel name="phone" #tel="ngModel">
           <span class="err" *ngIf="!tel.valid && tel.touched">Please, enter a valid phone number!</span>
         </div>
         <p class="auth-text">Password:</p>
         <div class="form-group">
           <label for="pass"></label>
-          <input type="password" id= "pass" placeholder="{{ password }}"
-                 autocomplete="off" minlength="6"
-                 class="input-auth" ngModel name="pass" #pass="ngModel">
+          <input type="password" id= "pass" placeholder="New password.."
+                 autocomplete="off" minlength="6" required
+                 class="input-auth" ngModel name="password" #pass="ngModel">
           <span class="err" *ngIf="!pass.valid && pass.touched">Password should contain at least 6 characters</span>
         </div>
       </div>

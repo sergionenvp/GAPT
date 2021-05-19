@@ -1,9 +1,13 @@
 export class User{
   email: string;
-  imagePath: string;
+  phone: string;
+  password: string;
+  image_hash: string;
 
-  constructor(email: string, imagePath: string) {
+  constructor(email: string, phone: string, password: string, imageHash: string) {
     this.email = email;
-    this.imagePath = imagePath;
+    this. phone = phone;
+    this.password = password;
+    this.image_hash = imageHash;
   }
 }

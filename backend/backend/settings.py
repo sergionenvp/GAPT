@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'corsheaders',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:4200',
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -135,8 +140,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+       'rest_framework.authentication.TokenAuthentication', 
     ]
 }
 
@@ -148,6 +152,6 @@ EMAIL_HOST_PASSWORD = '717684366'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-
+AUTH_USER_MODEL = 'accounts.User'
 
 #LOGIN_REDIRECT_URL = '/'

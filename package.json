@@ -19,8 +19,11 @@
     "@angular/platform-browser": "~11.2.6",
     "@angular/platform-browser-dynamic": "~11.2.6",
     "@angular/router": "~11.2.6",
+    "bn-ng-idle": "^1.0.1",
     "bootstrap": "^3.4.1",
+    "ngx-cookie-service": "^12.0.0",
     "rxjs": "~6.6.0",
+    "sweetalert2": "^11.0.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"
   },

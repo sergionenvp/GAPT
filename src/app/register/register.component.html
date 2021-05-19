@@ -15,21 +15,21 @@
       <label for="phone"></label>
       <input type="tel" id= "phone" placeholder="Your phone.."
              autocomplete="off" pattern="^\+*(\d{3})*[0-9,\-]{8,}"
-             class="input-auth" ngModel name="tel" #tel="ngModel">
+             class="input-auth" ngModel name="phone" #tel="ngModel">
       <span class="err" *ngIf="!tel.valid && tel.touched">Please, enter a valid phone number!</span>
     </div>
     <div class="form-group">
       <label for="pass"></label>
       <input type="password" id= "pass" placeholder="Your password.."
              required autocomplete="off" minlength="6"
-             class="input-auth" ngModel name="pass" #pass="ngModel">
+             class="input-auth" ngModel name="password" #pass="ngModel">
       <span class="err" *ngIf="!pass.valid && pass.touched">Valid password should contain at least 6 characters</span>
     </div>
     <div class="form-group">
       <label for="pic" class="input-auth picture" *ngIf="file.pristine">Upload Your Picture..</label>
       <label for="pic" class="input-auth picture" *ngIf="file.dirty">Picture Uploaded</label>
       <input type="file" id= "pic" style="display: none"
-             accept="image/*" ngModel name="file" #file="ngModel">
+             accept="image/*" ngModel name="image" #file="ngModel">
     </div>
     <button class="btn-auth" type="submit" [disabled]="!f.valid">Submit Form</button>
   </form>
