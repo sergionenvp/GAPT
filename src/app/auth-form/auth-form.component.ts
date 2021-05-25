@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { User } from '../user.model';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {Router} from '@angular/router';
 import {AccountService} from '../account.service';
 import Swal from 'sweetalert2';
-import { CookieService } from 'ngx-cookie-service';
 
 interface Token {
   auth_token: string;
@@ -19,13 +17,15 @@ export class AuthFormComponent implements OnInit {
   email: string;
   codeIncorrect = false;
   code: number;
+  count = 0;
+  check: number;
 
   constructor(private router: Router,
-              private accountService: AccountService,
-              private cookieService: CookieService) {}
+              private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.code = this.accountService.passCode();
+    this.code = this.accountService.code;
+    this.check = this.accountService.check;
     console.log(this.code);
   }
 
@@ -34,20 +34,37 @@ export class AuthFormComponent implements OnInit {
       return;
     }
     if (this.code === form.value.code) {
-      this.accountService.authUser().subscribe(
-        (result: Token) => {
-          this.accountService.createCookie(result.auth_token);
-          // this.cookieService.set('pictureId', result.auth_token);
-          // this.router.navigate(['/profile']).then(() => {
-          //   window.location.reload(); });
-        },
-        error => {
-          Swal.fire('Login problem', 'Something went wrong! Try again later', 'error');
-        }
-      );
+      if (this.check === 0) {
+        this.accountService.registerUser().subscribe(
+          () => { this.getToken(); },
+        (err) => {
+          console.log(err);
+          Swal.fire('Registration problem', 'Something went wrong! Try again later', 'error');
+          this.router.navigate(['/']);
+        });
+      } else if (this.check === 1) {
+        this.getToken();
+      }
     } else {
       this.codeIncorrect = true;
+      this.count += 1;
+      if (this.count === 3) {
+        this.count = 0;
+        this.router.navigate(['/']);
+      }
       form.resetForm();
     }
+  }
+
+  getToken(): void {
+    this.accountService.authUser().subscribe(
+      (result: Token) => {
+        this.accountService.createCookie(result.auth_token);
+      },
+      () => {
+        Swal.fire('Login problem', 'Something went wrong! Try again later', 'error');
+        this.router.navigate(['/login']);
+      }
+    );
   }
 }

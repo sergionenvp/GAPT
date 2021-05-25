@@ -4,12 +4,11 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import {AccountService} from '../account.service';
 import Swal from 'sweetalert2';
-import {User} from '../user.model';
 
 interface UserModel {
   email: string;
   phone: string;
-  image_url: string;
+  image: string;
   image_hash: string;
   auth_mode: string;
 }
@@ -23,7 +22,9 @@ export class ProfileComponent implements OnInit {
   editMode = false;
   settings = false;
   imageChanged = false;
+  deleteAccount = false;
   authMode: string;
+  image: File;
   defaultImgUrl = '/assets/images/default.jpg';
   imageUrl = this.defaultImgUrl; // should be reassigned to user picture url loaded from backend/cloud
   imageHash: string;
@@ -45,7 +46,9 @@ export class ProfileComponent implements OnInit {
           this.phone = result.phone;
           this.imageHash = result.image_hash;
           this.authMode = result.auth_mode;
-          // this.imageUrl = result.image_url;
+          if (result.image !== '') {
+            this.imageUrl = result.image;
+          }
           if (this.authMode === '4') {
             this.imageUrl = this.defaultImgUrl; // hides user picture if 2-factor authentication is off
           }
@@ -61,26 +64,24 @@ export class ProfileComponent implements OnInit {
     if (!form.valid){
       return;
     }
-    // Check if the user uploaded new picture
-    // if (this.imageChanged){
-    //   this.imageHash = // here should be a method to calculate new picture hash upon receipt
-    // }
+
+    const upload = new FormData();
     if (form.value.email !== '') {
-      this.mail = form.value.email;
+      upload.append('email', form.value.email);
     }
     if (form.value.phone !== '') {
-      this.phone = form.value.phone;
+      upload.append('phone', form.value.phone);
     }
-    const payLoad: User = {
-      email: this.mail,
-      phone: this.phone,
-      password: form.value.password,
-      image_hash: this.imageHash
-    };
-    this.accountService.updateUserInfo(payLoad).subscribe(
+    upload.append('password', form.value.password);
+    if (this.image) {
+      upload.append('image', this.image, this.image.name);
+    }
+
+    this.accountService.updateUserInfo(upload).subscribe(
       () => {
         Swal.fire('Update success', 'Your profile is updated', 'success');
         this.editMode = false;
+        window.location.reload();
       },
       () => {
         Swal.fire('Update problem', 'Something went wrong! Your profile is not updated. Try again later', 'error');
@@ -90,7 +91,17 @@ export class ProfileComponent implements OnInit {
 
   onPicDelete(): void{
     this.imageUrl = this.defaultImgUrl;
-    // updateUserInfo() to delete image_hash and image_url
+    const upload = new FormData();
+    upload.append('image', '');
+    this.accountService.updateUserInfo(upload).subscribe(
+      () => {
+        Swal.fire('Delete success', 'Your picture is deleted', 'success');
+        this.editMode = false;
+      },
+      () => {
+        Swal.fire('Delete problem', 'Something went wrong! Your picture is not deleted. Try again later', 'error');
+      }
+    );
   }
 
   onSaveSet(form: NgForm): void {
@@ -100,7 +111,9 @@ export class ProfileComponent implements OnInit {
     if (this.phone === '' && form.value.auth_mode === '3') {
       Swal.fire('Attention!', 'Please, provide a phone number in your profile or select other authentication method', 'warning');
     } else {
-      this.accountService.updateUserInfo(form.value).subscribe(
+      const upload = new FormData();
+      upload.append('auth_mode', form.value.auth_mode);
+      this.accountService.updateUserInfo(upload).subscribe(
         () => {
           Swal.fire('Update success', 'Your settings are updated', 'success');
           this.settings = false;
@@ -110,5 +123,22 @@ export class ProfileComponent implements OnInit {
         }
       );
     }
+  }
+
+  onUserDelete(form: NgForm): void {
+    this.accountService.deleteUser(form.value).subscribe(
+      () => {
+        this.cookieService.delete('pictureId');
+        Swal.fire('Delete success', 'Your account was deleted', 'success');
+        this.router.navigate(['/']).then(() => window.location.reload());
+      },
+      () => {
+        Swal.fire('Delete problem', 'Something went wrong! Your account was not deleted. Try again later', 'error');
+      }
+    );
+  }
+
+  getFiles(event: any) {
+    this.image = event.target.files[0];
   }
 }

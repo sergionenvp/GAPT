@@ -22,8 +22,9 @@ interface AuthMode {
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  picCorrect = true;
+  picCorrect = false;
   requestImg = false;
+  image: File;
   token: string;
   phone: string;
   authMode: string; // this property controls 2-factor authentication: 1-email, 2-picture, 3-phone, 4-disabled
@@ -44,6 +45,8 @@ export class LoginComponent implements OnInit {
     if (!form.valid){
       return;
     }
+
+    this.accountService.check = 1;
     this.accountService.loginUser(form.value).subscribe(
       (result: Token) => {
         this.token = result.auth_token;
@@ -56,9 +59,6 @@ export class LoginComponent implements OnInit {
             this.authMode = res.auth_mode;
             if (this.authMode === '4') {
               this.accountService.createCookie(this.token);
-              // this.cookieService.set('pictureId', this.token);
-              // this.router.navigate(['/profile']).then(() => {
-              //   window.location.reload(); });
             } else if (this.authMode === '1'){
               const payLoad: Email = {
                 message: 'Your email verification code ',
@@ -93,5 +93,9 @@ export class LoginComponent implements OnInit {
       Swal.fire('Picture mismatch!', 'Uploaded picture does not match your original picture. Please, try again!', 'error');
       form.resetForm();
     }
+  }
+
+  getFiles(event: any) {
+    this.image = event.target.files[0];
   }
 }

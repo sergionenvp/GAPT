@@ -5,8 +5,8 @@
     <div class="form-group">
       <input type="number" placeholder="Your code.." pattern="\d{5,5}" autocomplete="off"
              required class="input-auth" ngModel name="code" #code="ngModel">
-      <span class="err" *ngIf="!code.valid && code.touched">The code must contain only 5 digits. Please, try again!</span>
-      <span class="err" *ngIf="codeIncorrect">Entered number does not match the authorization code. Please, try again!</span>
+      <div class="err" *ngIf="!code.valid && code.touched">The code must contain only 5 digits. Please, try again!</div>
+      <div class="err" *ngIf="codeIncorrect">Entered number does not match the authorization code. Please, try again!</div>
     </div>
     <button class="btn-auth" type="submit" [disabled]="!f.valid">Confirm Code</button>
   </form>

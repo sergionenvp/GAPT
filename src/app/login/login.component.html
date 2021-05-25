@@ -8,7 +8,7 @@
       <label for="pic" class="input-auth picture" *ngIf="file.pristine">Upload Your Picture..</label>
       <label for="pic" class="input-auth picture" *ngIf="file.dirty">Picture Uploaded</label>
       <input type="file" id= "pic" style="display: none" required
-             accept="image/*" ngModel name="file" #file="ngModel">
+             accept="image/*" ngModel name="file" #file="ngModel" (change)="getFiles($event)">
       <span class="err" *ngIf="!file.valid && file.touched">Please, upload a valid picture!</span>
     </div>
     <button class="btn-auth" type="submit" [disabled]="!f.valid">Submit Form</button>

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -153,5 +154,8 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 AUTH_USER_MODEL = 'accounts.User'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 #LOGIN_REDIRECT_URL = '/'

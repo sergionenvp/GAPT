@@ -29,7 +29,7 @@
       <label for="pic" class="input-auth picture" *ngIf="file.pristine">Upload Your Picture..</label>
       <label for="pic" class="input-auth picture" *ngIf="file.dirty">Picture Uploaded</label>
       <input type="file" id= "pic" style="display: none"
-             accept="image/*" ngModel name="image" #file="ngModel">
+             accept="image/*" ngModel name="image" #file="ngModel" (change)="getFiles($event)">
     </div>
     <button class="btn-auth" type="submit" [disabled]="!f.valid">Submit Form</button>
   </form>

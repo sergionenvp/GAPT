@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Email} from './email.model';
 import {AccountService} from '../account.service';
@@ -14,6 +14,7 @@ import {Router} from '@angular/router';
 
 export class RegisterComponent implements OnInit {
   email;
+  image: File;
   emailSent = true;
   isRegistered = false;
 
@@ -33,20 +34,30 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.accountService.registerUser(form.value).subscribe(
-      () => {
-        // Data to send to backend for email generation
-        this.email = form.value.email;
-        const payLoad: Email = {
+    this.accountService.check = 0;
+    this.accountService.body = form.value;
+    // this.accountService.image = form.value.image;
+    const upload = new FormData();
+    upload.append('email', form.value.email);
+    upload.append('phone', form.value.phone);
+    upload.append('password', form.value.password);
+    if (this.image) {
+      upload.append('image', this.image, this.image.name);
+    } else {
+      upload.append('image', form.value.image);
+    }
+    // .log(form.value.email);
+    this.accountService.form = upload;
+    this.email = form.value.email;
+    const payLoad: Email = {
           message: 'Your email verification code ',
           subject: 'Verify your email',
           toEmail: this.email
         };
-        this.emailSent = this.accountService.getCode(payLoad);
-      },
-      error => {
-          Swal.fire('Registration problem', 'Something went wrong! Try again later', 'error');
-      }
-    );
+    this.emailSent = this.accountService.getCode(payLoad);
+  }
+
+  getFiles(event: any) {
+    this.image = event.target.files[0];
   }
 }

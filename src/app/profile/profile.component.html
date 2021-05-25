@@ -1,5 +1,7 @@
 <div class="main">
-  <h1 class="action">Your Profile</h1>
+  <h1 class="action" *ngIf="!deleteAccount && !settings">Your Profile</h1>
+  <h1 class="action" *ngIf="!deleteAccount && settings">Account Settings</h1>
+  <h1 class="action" *ngIf="deleteAccount">Delete Account</h1>
   <div class="form" *ngIf="!editMode">
   <div class="row">
     <div class="col-sm-4">
@@ -47,8 +49,11 @@
         <button class="btn-home" type="submit" *ngIf="settings">Save Settings</button>
     </form>
   </div>
-    <button class="btn-home" (click)="editMode = true;" *ngIf="!settings">Edit Profile</button>
-    <button class="btn-home" (click)="settings = true;" *ngIf="!settings">Settings</button>
+    <div>
+      <button class="btn-home" (click)="settings = true;" *ngIf="!settings && !deleteAccount">Settings</button>
+    </div>
+    <button class="btn-home" (click)="editMode = true;" *ngIf="!settings && !deleteAccount">Edit Profile</button>
+    <button class="btn-home" (click)="deleteAccount = true;" *ngIf="!settings && !deleteAccount">Delete Account</button>
 </div>
 
   <form *ngIf="editMode" #f="ngForm" (ngSubmit)="onSubmit(f)">
@@ -58,8 +63,8 @@
         <div class="form-group">
           <label for="pic" class="input-auth picture" *ngIf="file.pristine">Upload New Picture..</label>
           <label for="pic" class="input-auth picture" *ngIf="file.dirty">New Picture Uploaded</label>
-          <input type="file" id= "pic" style="display: none" (click)="imageChanged = true"
-                 accept="image/*" ngModel name="image" #file="ngModel">
+          <input type="file" id= "pic" style="display: none"
+                 accept="image/*" ngModel name="image" #file="ngModel" (change)="getFiles($event)">
         </div>
         <div class="form-group">
           <button class="input-auth picture" (click)="onPicDelete()">Delete Profile Picture</button>
@@ -85,11 +90,23 @@
           <input type="password" id= "pass" placeholder="New password.."
                  autocomplete="off" minlength="6" required
                  class="input-auth" ngModel name="password" #pass="ngModel">
-          <span class="err" *ngIf="!pass.valid && pass.touched">Password should contain at least 6 characters</span>
+          <div class="err" *ngIf="!pass.valid && pass.touched">Password should contain at least 6 characters</div>
         </div>
       </div>
     </div>
-    <button class="btn-home" (click)="editMode = false" >Cancel Edit</button>
+    <button class="btn-home" (click)="editMode = false">Cancel Edit</button>
     <button class="btn-home" type="submit" [disabled]="!f.valid || f.pristine">Update Profile</button>
+  </form>
+  <form *ngIf="deleteAccount" #f="ngForm" (ngSubmit)="onUserDelete(f)">
+        <p class="auth-text">Password:</p>
+        <div class="form-group">
+          <label for="pass"></label>
+          <input type="password" id= "password" placeholder="Your password.."
+                 autocomplete="off" minlength="6" required
+                 class="input-auth" ngModel name="current_password" #pass="ngModel">
+          <div class="err" *ngIf="!pass.valid && pass.touched">Password should contain at least 6 characters</div>
+        </div>
+    <button class="btn-home" (click)="deleteAccount = false" >Cancel Delete</button>
+    <button class="btn-home" type="submit" [disabled]="!f.valid || f.pristine">Confirm Delete</button>
   </form>
 </div>

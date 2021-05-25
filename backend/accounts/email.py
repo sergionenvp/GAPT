@@ -7,7 +7,7 @@ import random
 
 
 def send_email(obj):
-    code = f'{random.randrange(1, 10**5):03}'
+    code = random.randint(10000,99999)
     subject = obj['subject']
     message = obj['message'] + str(code)
     to_email = obj['toEmail']

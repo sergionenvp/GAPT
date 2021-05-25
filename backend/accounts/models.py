@@ -5,7 +5,7 @@ from django.contrib.auth.models import BaseUserManager
 from django.db import models
 
 class UserManager(BaseUserManager):
-    def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, email, password, is_staff, is_superuser, image, **extra_fields):
         if not email:
             raise ValueError('User must have email address')
         if not password:
@@ -17,6 +17,7 @@ class UserManager(BaseUserManager):
                 is_active=True,
                 is_staff = is_staff,
                 is_superuser = is_superuser,
+                image = image,
                 auth_mode='1',
                 last_login=now,
                 date_joined=now,
@@ -48,6 +49,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['phone', 'image_url', 'image_hash', 'auth_mode']
+    REQUIRED_FIELDS = ['phone', 'image_hash', 'auth_mode', 'image']
 
     objects = UserManager()
