@@ -14,6 +14,8 @@ import {Router} from '@angular/router';
 
 export class RegisterComponent implements OnInit {
   email;
+  phone;
+  password;
   image: File;
   emailSent = true;
   isRegistered = false;
@@ -36,17 +38,10 @@ export class RegisterComponent implements OnInit {
 
     this.accountService.check = 0;
     this.accountService.body = form.value;
-    // this.accountService.image = form.value.image;
     const upload = new FormData();
     upload.append('email', form.value.email);
     upload.append('phone', form.value.phone);
     upload.append('password', form.value.password);
-    if (this.image) {
-      upload.append('image', this.image, this.image.name);
-    } else {
-      upload.append('image', form.value.image);
-    }
-    // .log(form.value.email);
     this.accountService.form = upload;
     this.email = form.value.email;
     const payLoad: Email = {
@@ -55,9 +50,5 @@ export class RegisterComponent implements OnInit {
           toEmail: this.email
         };
     this.emailSent = this.accountService.getCode(payLoad);
-  }
-
-  getFiles(event: any) {
-    this.image = event.target.files[0];
   }
 }

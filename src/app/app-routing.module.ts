@@ -5,13 +5,15 @@ import {RegisterComponent} from './register/register.component';
 import {AuthFormComponent} from './auth-form/auth-form.component';
 import {LoginComponent} from './login/login.component';
 import {ProfileComponent} from './profile/profile.component';
+import { CameraComponent } from './camera/camera.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'auth', component: AuthFormComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'profile', component: ProfileComponent}
+  {path: 'profile', component: ProfileComponent},
+  {path: 'camera', component: CameraComponent}
 ];
 
 @NgModule({

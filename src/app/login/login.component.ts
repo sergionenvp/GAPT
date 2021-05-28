@@ -22,9 +22,6 @@ interface AuthMode {
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  picCorrect = false;
-  requestImg = false;
-  image: File;
   token: string;
   phone: string;
   authMode: string; // this property controls 2-factor authentication: 1-email, 2-picture, 3-phone, 4-disabled
@@ -67,35 +64,24 @@ export class LoginComponent implements OnInit {
               };
               this.accountService.getCode(payLoad);
             } else if (this.authMode === '2') {
-              this.requestImg = true;
+              this.router.navigate(['/camera']);
             } else if (this.authMode === '3'){
               this.phone = res.phone;
               // do smth to send code to phone ???
             }
           },
           () => {
-            Swal.fire('Connection problem', 'Something went wrong! Try again later', 'error');
+            Swal.fire('Connection problem',
+              'Something went wrong! Try again later',
+              'error');
           }
         );
       },
       () => {
-        Swal.fire('Login problem', 'Unable to login with provided credentials', 'error');
+        Swal.fire('Login problem',
+          'Unable to login with provided credentials',
+          'error');
       }
     );
-  }
-
-  onImgSubmit(form: NgForm): void {
-    // calculate new image hash and sent to server to compare with the original picture ?
-    // this.picCorrect = get true/false response from server on picture identification ?
-    if (this.picCorrect) {
-      this.accountService.createCookie(this.token);
-    } else {
-      Swal.fire('Picture mismatch!', 'Uploaded picture does not match your original picture. Please, try again!', 'error');
-      form.resetForm();
-    }
-  }
-
-  getFiles(event: any) {
-    this.image = event.target.files[0];
   }
 }

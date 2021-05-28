@@ -2,3 +2,5 @@ CMD commands to start the backend server:
 1. in backend/venv/Scripts: activate.bat
 2. in backend: python manage.py runserver
 
+ng serve
+

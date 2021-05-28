@@ -1,0 +1,16 @@
+<div class="main">
+  <h1 class="action">Take a Picture</h1>
+  <div class="login">
+    <p class="auth-text" style="font-weight: bold;">Use the device camera to take your picture</p>
+    <p class="auth-text">Before taking a picture make sure that your face is clearly visible. If you are wearing a face mask, you can keep it on.</p>
+    <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+      <span class="col-md-6" *ngIf="webcamImage">
+        <img [height]="377" [width]="500" [src]="webcamImage.imageAsDataUrl"/>
+      </span>
+    <div>
+      <button routerLink="/profile" class="btn-home" *ngIf="check === 2">Cancel Picture Update</button>
+      <button class="btn-home" (click)="triggerSnapshot()">Take Picture</button>
+      <button class="btn-home" (click)="onSave()" [disabled]="!webcamImage">Save Picture</button>
+    </div>
+  </div>
+</div>

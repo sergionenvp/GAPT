@@ -4,9 +4,7 @@ import {Router} from '@angular/router';
 import {AccountService} from '../account.service';
 import Swal from 'sweetalert2';
 
-interface Token {
-  auth_token: string;
-}
+
 
 @Component({
   selector: 'app-auth-form',
@@ -35,15 +33,9 @@ export class AuthFormComponent implements OnInit {
     }
     if (this.code === form.value.code) {
       if (this.check === 0) {
-        this.accountService.registerUser().subscribe(
-          () => { this.getToken(); },
-        (err) => {
-          console.log(err);
-          Swal.fire('Registration problem', 'Something went wrong! Try again later', 'error');
-          this.router.navigate(['/']);
-        });
+        this.router.navigate(['/camera']);
       } else if (this.check === 1) {
-        this.getToken();
+        this.accountService.getToken();
       }
     } else {
       this.codeIncorrect = true;
@@ -56,15 +48,5 @@ export class AuthFormComponent implements OnInit {
     }
   }
 
-  getToken(): void {
-    this.accountService.authUser().subscribe(
-      (result: Token) => {
-        this.accountService.createCookie(result.auth_token);
-      },
-      () => {
-        Swal.fire('Login problem', 'Something went wrong! Try again later', 'error');
-        this.router.navigate(['/login']);
-      }
-    );
-  }
+
 }

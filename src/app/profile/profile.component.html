@@ -61,13 +61,10 @@
       <div class="col-sm-4">
         <img src="{{ imageUrl }}" alt="Profile picture" class="img-thumbnail">
         <div class="form-group">
-          <label for="pic" class="input-auth picture" *ngIf="file.pristine">Upload New Picture..</label>
-          <label for="pic" class="input-auth picture" *ngIf="file.dirty">New Picture Uploaded</label>
-          <input type="file" id= "pic" style="display: none"
-                 accept="image/*" ngModel name="image" #file="ngModel" (change)="getFiles($event)">
+          <button class="input-auth picture" type="button" (click)="onChangePic()">Update Profile Picture</button>
         </div>
         <div class="form-group">
-          <button class="input-auth picture" (click)="onPicDelete()">Delete Profile Picture</button>
+          <button class="input-auth picture" type="button" (click)="onPicDelete()">Delete Profile Picture</button>
         </div>
       </div>
       <div class="col-sm-8">

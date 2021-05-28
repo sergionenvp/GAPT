@@ -49,6 +49,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['phone', 'image_hash', 'auth_mode', 'image']
+    REQUIRED_FIELDS = ['phone', 'auth_mode', 'image']
 
     objects = UserManager()

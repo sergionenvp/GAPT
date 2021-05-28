@@ -13,6 +13,8 @@ import { LoginComponent } from './login/login.component';
 import {HttpClientModule} from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { BnNgIdleService } from 'bn-ng-idle';
+import { CameraComponent } from './camera/camera.component';
+import {WebcamModule} from 'ngx-webcam';
 
 
 @NgModule({
@@ -23,13 +25,15 @@ import { BnNgIdleService } from 'bn-ng-idle';
     HomeComponent,
     RegisterComponent,
     ProfileComponent,
-    LoginComponent
+    LoginComponent,
+    CameraComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    WebcamModule
   ],
   providers: [CookieService, BnNgIdleService],
   bootstrap: [AppComponent]

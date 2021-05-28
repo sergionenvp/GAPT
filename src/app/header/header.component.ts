@@ -26,7 +26,9 @@ export class HeaderComponent implements OnInit {
     if (this.isLoggedIn) {
       this.bnIdle.startWatching(300).subscribe((res) => {
         if (res) {
-          Swal.fire('Automatic logout', 'You have been logged out due to inactivity', 'warning');
+          Swal.fire('Automatic logout',
+            'You have been logged out due to inactivity',
+            'warning');
           this.logOut();
         }
       });

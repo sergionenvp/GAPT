@@ -10,6 +10,10 @@ interface Response {
   message: string;
 }
 
+interface Token {
+  auth_token: string;
+}
+
 @Injectable()
 export class AccountService{
 
@@ -17,9 +21,8 @@ export class AccountService{
   emailSent = '';
   body;
   form: FormData;
-  image: File;
   isLogged: boolean;
-  check: number; // if set to 0, user needs to be registered, if set to 1 - login
+  check: number; // 0 is user registration, 1 is login with picture, 2 is changing profile picture
   baseUrl = 'http://127.0.0.1:8000/';
   emailUrl = this.baseUrl + 'accounts/email_view';
   registerUrl = this.baseUrl + 'auth/users/';
@@ -38,7 +41,9 @@ export class AccountService{
    this.http.post(this.emailUrl, payLoad).subscribe((response: Response) => {
      this.router.navigate(['/auth']); this.code = +response.message; }, (error: Response) => {
      this.emailSent = error.message;
-     Swal.fire('Email not sent', 'Something went wrong! Try again later', 'error'); } );
+     Swal.fire('Email not sent',
+       'Something went wrong! Try again later',
+       'error'); } );
    if (this.emailSent === 'error') {
      return false;
    }
@@ -50,42 +55,61 @@ export class AccountService{
  }
 
   authUser() {
-    return this.http.post(this.loginUrl, this.body, {headers: this.headers});
+    return this.http.post(this.loginUrl, this.body,
+      {headers: this.headers});
   }
 
   loginUser(userData) {
     this.body = JSON.stringify(userData);
-    return this.http.post(this.loginUrl, this.body, {headers: this.headers});
+    return this.http.post(this.loginUrl, this.body,
+      {headers: this.headers});
   }
 
-  getAuthHeaders() {
+  getAuthJsonHeaders() {
     const token = this.cookieService.get('pictureId');
     return new HttpHeaders({
+      'Content-Type': 'application/json',
       Authorization: 'Token ' + token
     });
   }
 
   logoutUser() {
-    return this.http.post(this.logoutUrl, null, {headers: this.getAuthHeaders()});
+    return this.http.post(this.logoutUrl, null,
+      {headers: this.getAuthJsonHeaders()});
   }
 
   getUserInfo() {
-    return this.http.get(this.userUrl, {headers: this.getAuthHeaders()});
+    return this.http.get(this.userUrl, {headers: this.getAuthJsonHeaders()});
   }
 
   updateUserInfo(userData) {
-    //const data = JSON.stringify(userData);
-    return this.http.patch<any>(this.userUrl, userData, {headers: this.getAuthHeaders()});
+    return this.http.patch<any>(this.userUrl, userData,
+      {headers: this.getAuthJsonHeaders().delete('Content-Type', 'application/json')});
   }
 
   deleteUser(userData) {
     const data = JSON.stringify(userData);
-    return this.http.request('DELETE', this.userUrl, { body: data, headers: this.getAuthHeaders()});
+    return this.http.request('DELETE', this.userUrl,
+      { body: data, headers: this.getAuthJsonHeaders()});
   }
 
   createCookie(token): void {
     this.cookieService.set('pictureId', token);
     this.router.navigate(['/profile']).then(() => {
       window.location.reload(); });
+  }
+
+  getToken(): void {
+    this.authUser().subscribe(
+      (result: Token) => {
+        this.createCookie(result.auth_token);
+      },
+      () => {
+        Swal.fire('Login problem',
+          'Something went wrong! Try again later',
+          'error');
+        this.router.navigate(['/login']);
+      }
+    );
   }
 }
