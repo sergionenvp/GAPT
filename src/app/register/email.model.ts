@@ -1,3 +1,4 @@
+// Email model containing all the fields that will be included in the confirmation email
 export class Email{
   message: string;
   subject: string;

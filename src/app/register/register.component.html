@@ -2,7 +2,7 @@
   <h1 class="action">Registration</h1>
   <div class="err" *ngIf="!emailSent">E-mail has not been sent. Please, try again!</div>
   <p class="auth-text">Upon submitting this form you will receive an e-mail with the authorization code.
-    To complete registration enter the received code in the corresponding field on the next screen.</p>
+    To proceed with registration enter the received code in the corresponding field on the next screen.</p>
   <form #f="ngForm" (ngSubmit)="onSubmit(f)">
     <div class="form-group">
       <label for="email"></label>

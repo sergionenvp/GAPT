@@ -70,9 +70,7 @@
       <div class="col-sm-8">
         <p class="auth-text">Email:</p>
         <div class="form-group">
-          <input type="email" id="email" placeholder="{{ mail }}"
-          autocomplete="off" email maxlength="50" class="input-auth" ngModel name="email" #email="ngModel">
-          <span class="err" *ngIf="!email.valid && email.touched">Please, enter a valid e-mail!</span>
+          <p class="auth-text">{{ mail }}</p>
         </div>
         <p class="auth-text">Phone number:</p>
         <div class="form-group">
@@ -85,7 +83,7 @@
         <div class="form-group">
           <label for="pass"></label>
           <input type="password" id= "pass" placeholder="New password.."
-                 autocomplete="off" minlength="6" required
+                 autocomplete="off" minlength="6"
                  class="input-auth" ngModel name="password" #pass="ngModel">
           <div class="err" *ngIf="!pass.valid && pass.touched">Password should contain at least 6 characters</div>
         </div>

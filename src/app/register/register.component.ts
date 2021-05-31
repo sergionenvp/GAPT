@@ -13,42 +13,43 @@ import {Router} from '@angular/router';
 })
 
 export class RegisterComponent implements OnInit {
-  email;
-  phone;
-  password;
-  image: File;
   emailSent = true;
-  isRegistered = false;
 
   constructor(private accountService: AccountService,
               private cookieService: CookieService,
               private router: Router) {}
 
   ngOnInit(): void {
+    // Check if the user is logged in and redirect to profile
     const token = this.cookieService.get('pictureId');
     if (token) {
       this.router.navigate(['/profile']);
     }
   }
 
+  // Method called upon form submission
   onSubmit(form: NgForm): void  {
+    // Check if the form is valid
     if (!form.valid){
       return;
     }
-
+    // Registration mode
     this.accountService.check = 0;
+    // Form values
     this.accountService.body = form.value;
+    // FormData object with user-provided data is generated
     const upload = new FormData();
     upload.append('email', form.value.email);
     upload.append('phone', form.value.phone);
     upload.append('password', form.value.password);
     this.accountService.form = upload;
-    this.email = form.value.email;
+    // Email object is instantiated with all the required fields that will be passed to backend
     const payLoad: Email = {
           message: 'Your email verification code ',
           subject: 'Verify your email',
-          toEmail: this.email
+          toEmail: form.value.email
         };
+    // Method getCode() passes the Email object to AccountService to send request for email generation to backend
     this.emailSent = this.accountService.getCode(payLoad);
   }
 }

@@ -41,7 +41,6 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=30, blank=True)
-    image_url = models.CharField(max_length=255, blank=True)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
     image_hash = models.CharField(max_length=255, blank=True)
     auth_mode = models.CharField(max_length=5, blank=True)

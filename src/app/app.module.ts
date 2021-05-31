@@ -7,14 +7,14 @@ import { AuthFormComponent } from './auth-form/auth-form.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import {AppRoutingModule} from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { CameraComponent } from './camera/camera.component';
-import {WebcamModule} from 'ngx-webcam';
+import { WebcamModule } from 'ngx-webcam';
 
 
 @NgModule({

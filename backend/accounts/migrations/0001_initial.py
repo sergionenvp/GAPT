@@ -27,7 +27,6 @@ class Migration(migrations.Migration):
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
                 ('email', models.EmailField(max_length=255, unique=True)),
                 ('phone', models.CharField(blank=True, max_length=30)),
-                ('image_url', models.CharField(blank=True, max_length=255)),
                 ('image', models.ImageField(blank=True, null=True, upload_to='images/')),
                 ('image_hash', models.CharField(blank=True, max_length=255)),
                 ('auth_mode', models.CharField(blank=True, max_length=5)),

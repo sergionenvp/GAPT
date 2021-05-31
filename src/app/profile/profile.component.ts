@@ -19,6 +19,7 @@ interface UserModel {
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  // Customization of the alert popups using Bootstrap
   swalWithBootstrapButtons = Swal.mixin({
     customClass: {
       confirmButton: 'btn btn-success',
@@ -32,7 +33,7 @@ export class ProfileComponent implements OnInit {
   deleteAccount = false;
   authMode: string;
   defaultImgUrl = '/assets/images/default.jpg';
-  imageUrl = this.defaultImgUrl; // should be reassigned to user picture url loaded from backend/cloud
+  imageUrl = this.defaultImgUrl; // reassigned to user picture url loaded from backend
   imageHash: string;
   mail = '';
   phone = '';
@@ -42,10 +43,12 @@ export class ProfileComponent implements OnInit {
               private accountService: AccountService) { }
 
   ngOnInit(): void {
+    // Check if the user is not logged in and redirect to Login screen
     const token = this.cookieService.get('pictureId');
     if (!token) {
       this.router.navigate(['/login']);
     } else {
+      // If logged in, get all user data from backend database
       this.accountService.getUserInfo().subscribe(
         (result: UserModel) => {
           this.mail = result.email;
@@ -55,8 +58,10 @@ export class ProfileComponent implements OnInit {
           if (result.image) {
             this.imageUrl = result.image;
           }
+          // If authentication is turned off, hide user picture and phone number
           if (this.authMode === '4') {
-            this.imageUrl = this.defaultImgUrl; // hides user picture if 2-factor authentication is off
+            this.imageUrl = this.defaultImgUrl;
+            this.phone = 'hidden';
           }
         },
         () => {
@@ -68,24 +73,26 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // Method called when user wants to make changes to their profile
   onSubmit(form: NgForm): void {
+    // Check if form is valid
     if (!form.valid){
       return;
     }
-
+    // FormData object to hold the data provided by the user
     const upload = new FormData();
-    if (form.value.email !== '') {
-      upload.append('email', form.value.email);
-    }
     if (form.value.phone !== '') {
       upload.append('phone', form.value.phone);
     }
-    upload.append('password', form.value.password);
-
+    if (form.value.phone !== '') {
+      upload.append('password', form.value.password);
+    }
+    // Call updateUserInfo method to pass new data to backend to be save in the database
     this.accountService.updateUserInfo(upload).subscribe(
       () => {
         Swal.fire('Update success', 'Your profile is updated', 'success');
         this.editMode = false;
+        // Reload to show updated user info
         window.location.reload();
       },
       () => {
@@ -96,7 +103,9 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  // Method called when user picture is deleted from the profile
   onPicDelete(): void{
+    // Alert window that asks the user if they really want to delete profile picture
     this.swalWithBootstrapButtons.fire({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',
@@ -107,9 +116,12 @@ export class ProfileComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
+        // Profile picture is et to default
         this.imageUrl = this.defaultImgUrl;
+        // Empty value is passed in FormData to be stored in the database instead of the user picture
         const upload = new FormData();
         upload.append('image', '');
+        // Call updateUserInfo method to save changes in the database
         this.accountService.updateUserInfo(upload).subscribe(
           () => {
             this.swalWithBootstrapButtons.fire(
@@ -129,17 +141,29 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  // Method to change account authorization settings
   onSaveSet(form: NgForm): void {
+    // Check if form is valid
     if (!form.valid){
       return;
     }
+    // Check if user wants to set phone verification, but there is no phone number in the profile
+    // Show a warning asking to select a different option or provide a phone number
     if (this.phone === '' && form.value.auth_mode === '3') {
       Swal.fire('Attention!',
         'Please, provide a phone number in your profile or select other authentication method',
         'warning');
+      // Check if the user wants to set face verification and has no picture in the profile
+      // Show a warning asking to select a different option or add a picture
+    } else if (this.imageUrl === this.defaultImgUrl && form.value.auth_mode === '2') {
+      Swal.fire('Attention!',
+        'Please, provide a picture in your profile or select other authentication method',
+        'warning');
     } else {
+      // Construct FormData object with a new value for auth_mode
       const upload = new FormData();
       upload.append('auth_mode', form.value.auth_mode);
+      // Update user information in the database
       this.accountService.updateUserInfo(upload).subscribe(
         () => {
           Swal.fire('Update success',
@@ -156,7 +180,9 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // Method to delete user account
   onUserDelete(form: NgForm): void {
+    // Alert popup asking the user is they really want to delete the account
     this.swalWithBootstrapButtons.fire({
       title: 'Are you sure?',
       text: 'You won\'t be able to revert this!',
@@ -166,6 +192,9 @@ export class ProfileComponent implements OnInit {
       cancelButtonText: 'No, cancel!',
       reverseButtons: true
     }).then((result) => {
+      // If delete is confirmed, deleteUser() method is called
+      // Upon account deletion completion session cookie is also deleted
+      // The user is redirected to Home screen
       if (result.isConfirmed) {
         this.accountService.deleteUser(form.value).subscribe(
           () => {
@@ -184,6 +213,7 @@ export class ProfileComponent implements OnInit {
               'error');
           }
         );
+        // Delete cancelled
       } else if (
         result.dismiss === Swal.DismissReason.cancel
       ) {
@@ -194,6 +224,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  // Method used to update user profile picture
   onChangePic(): void {
     this.accountService.check = 2;
     this.router.navigate(['/camera']);
