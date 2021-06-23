@@ -1,4 +1,5 @@
 from accounts.email import send_email
+from accounts.sms import send_msg
 from accounts.Eyes_recognition import logIn
 from accounts.Eyes_recognition import signUp
 from rest_framework.decorators import api_view
@@ -15,10 +16,15 @@ def index(request):
 def email_view(request):
     if request.method == "POST":
         return send_email(request.data)
+
+@api_view(["POST"])
+def sms_view(request):
+    if request.method == "POST":
+        return send_msg(request.data)     
         
-@api_view(["GET"])
+@api_view(["POST"])
 def first_eyes_auth(request):
-    if request.method == "GET":
+    if request.method == "POST":
         return signUp(request.data)
         
 @api_view(["GET"])

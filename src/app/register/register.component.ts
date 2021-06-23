@@ -2,7 +2,6 @@ import {Component, OnInit } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Email} from './email.model';
 import {AccountService} from '../account.service';
-import Swal from 'sweetalert2';
 import { CookieService } from 'ngx-cookie-service';
 import {Router} from '@angular/router';
 
@@ -14,6 +13,8 @@ import {Router} from '@angular/router';
 
 export class RegisterComponent implements OnInit {
   emailSent = true;
+  countryCode = '356';
+  phoneNum = '';
 
   constructor(private accountService: AccountService,
               private cookieService: CookieService,
@@ -37,10 +38,13 @@ export class RegisterComponent implements OnInit {
     this.accountService.check = 0;
     // Form values
     this.accountService.body = form.value;
+    if (form.value.phone !== '') {
+      this.phoneNum = '+' + this.countryCode + form.value.phone;
+    }
     // FormData object with user-provided data is generated
     const upload = new FormData();
     upload.append('email', form.value.email);
-    upload.append('phone', form.value.phone);
+    upload.append('phone', this.phoneNum);
     upload.append('password', form.value.password);
     this.accountService.form = upload;
     // Email object is instantiated with all the required fields that will be passed to backend
@@ -51,5 +55,9 @@ export class RegisterComponent implements OnInit {
         };
     // Method getCode() passes the Email object to AccountService to send request for email generation to backend
     this.emailSent = this.accountService.getCode(payLoad);
+  }
+
+  countryChange(country: any): void {
+    this.countryCode = country.dialCode;
   }
 }

@@ -1,6 +1,7 @@
 <div class="main">
   <h1 class="action" *ngIf="!deleteAccount && !settings">Your Profile</h1>
   <h1 class="action" *ngIf="!deleteAccount && settings">Account Settings</h1>
+  <div class="err" *ngIf="!deleteAccount && showWarn">To get access to your picture and personal details, turn on two-factor authentication</div>
   <h1 class="action" *ngIf="deleteAccount">Delete Account</h1>
   <div class="form" *ngIf="!editMode">
   <div class="row">
@@ -74,9 +75,8 @@
         </div>
         <p class="auth-text">Phone number:</p>
         <div class="form-group">
-          <input type="tel" id="phone" placeholder="{{ phone }}"
-                 autocomplete="off" pattern="^\+*(\d{3})*[0-9,\-]{8,}"
-                 class="input-auth" ngModel name="phone" #tel="ngModel">
+          <input type="tel" id= "phone" style="width: 100%; margin-left: 5px" pattern="^[0-9]{8,}" (countryChange)="countryChange($event)"
+                 class="input-auth" ng2TelInput [ng2TelInputOptions]="{initialCountry: 'mt'}" ngModel name="phone" #tel="ngModel">
           <span class="err" *ngIf="!tel.valid && tel.touched">Please, enter a valid phone number!</span>
         </div>
         <p class="auth-text">Password:</p>

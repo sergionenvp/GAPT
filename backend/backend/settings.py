@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'djoser',
+    'sendsms'
 ]
 
 MIDDLEWARE = [
@@ -151,6 +152,9 @@ EMAIL_HOST_USER = 'triomalta20@gmail.com'
 EMAIL_HOST_PASSWORD = '717684366'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+SENDSMS_BACKEND = 'sendsms.backends.console.SmsBackend'
+SENDSMS_HOST_USER = '+35679339431'
 
 AUTH_USER_MODEL = 'accounts.User'
 

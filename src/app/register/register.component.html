@@ -13,10 +13,9 @@
     </div>
     <div class="form-group">
       <label for="phone"></label>
-      <input type="tel" id= "phone" placeholder="Your phone.."
-             autocomplete="off" pattern="^\+*(\d{3})*[0-9,\-]{8,}"
-             class="input-auth" ngModel name="phone" #tel="ngModel">
-      <span class="err" *ngIf="!tel.valid && tel.touched">Please, enter a valid phone number!</span>
+      <input type="tel" id= "phone" style="width: 100%;" pattern="^[0-9]{8,}" (countryChange)="countryChange($event)"
+             class="input-auth" ng2TelInput [ng2TelInputOptions]="{initialCountry: 'mt'}" ngModel name="phone" #tel="ngModel">
+      <div class="err" *ngIf="!tel.valid && tel.touched">Please, enter a valid phone number!</div>
     </div>
     <div class="form-group">
       <label for="pass"></label>

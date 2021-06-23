@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import Swal from 'sweetalert2';
+import {Sms} from './login/sms.model';
 
 interface Response {
   success: string;
@@ -25,10 +26,12 @@ export class AccountService{
   // Endpoints to the backend
   baseUrl = 'http://127.0.0.1:8000/';
   emailUrl = this.baseUrl + 'accounts/email_view';
+  smsUrl = this.baseUrl + 'accounts/sms_view';
   registerUrl = this.baseUrl + 'auth/users/';
   loginUrl = this.baseUrl + 'auth/token/login/';
   logoutUrl = this.baseUrl + 'auth/token/logout/';
   userUrl = this.baseUrl + 'auth/users/me/';
+  faceRecUrl = this.baseUrl + 'accounts/first_eyes_auth';
   headers = new HttpHeaders({
     'Content-Type': 'application/json'
   });
@@ -49,6 +52,15 @@ export class AccountService{
      return false;
    }
    return true;
+  }
+
+  getCodeSms(payLoad: Sms): void {
+    this.http.post(this.smsUrl, payLoad).subscribe((response: Response) => {
+      this.router.navigate(['/auth']); this.code = +response.message; }, (error: Response) => {
+      this.emailSent = error.message;
+      Swal.fire('SMS not sent',
+        'Something went wrong! Try again later',
+        'error'); } );
   }
 
   // Method to register user in the backend database
@@ -122,5 +134,10 @@ export class AccountService{
         this.router.navigate(['/login']);
       }
     );
+  }
+
+  pictureMatch(userData) {
+    const data = JSON.stringify(userData);
+    return this.http.post(this.faceRecUrl, data, {headers: this.getAuthJsonHeaders()});
   }
 }

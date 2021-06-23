@@ -31,10 +31,12 @@ export class ProfileComponent implements OnInit {
   settings = false;
   imageChanged = false;
   deleteAccount = false;
+  showWarn = false;
   authMode: string;
   defaultImgUrl = '/assets/images/default.jpg';
   imageUrl = this.defaultImgUrl; // reassigned to user picture url loaded from backend
   imageHash: string;
+  countryCode = '356';
   mail = '';
   phone = '';
 
@@ -62,6 +64,7 @@ export class ProfileComponent implements OnInit {
           if (this.authMode === '4') {
             this.imageUrl = this.defaultImgUrl;
             this.phone = 'hidden';
+            this.showWarn = true;
           }
         },
         () => {
@@ -81,10 +84,10 @@ export class ProfileComponent implements OnInit {
     }
     // FormData object to hold the data provided by the user
     const upload = new FormData();
-    if (form.value.phone !== '') {
-      upload.append('phone', form.value.phone);
+    if (form.value.phone !== '' || form.value.phone !== 'hidden') {
+      upload.append('phone', '+' + this.countryCode + form.value.phone);
     }
-    if (form.value.phone !== '') {
+    if (form.value.password !== '') {
       upload.append('password', form.value.password);
     }
     // Call updateUserInfo method to pass new data to backend to be save in the database
@@ -166,10 +169,13 @@ export class ProfileComponent implements OnInit {
       // Update user information in the database
       this.accountService.updateUserInfo(upload).subscribe(
         () => {
-          Swal.fire('Update success',
-            'Your settings are updated',
-            'success');
+          Swal.fire({ icon: 'success',
+            title: 'Update success',
+            text: 'Your settings are updated',
+            showConfirmButton: false
+          });
           this.settings = false;
+          window.location.reload();
         },
         () => {
           Swal.fire('Update problem',
@@ -228,5 +234,9 @@ export class ProfileComponent implements OnInit {
   onChangePic(): void {
     this.accountService.check = 2;
     this.router.navigate(['/camera']);
+  }
+
+  countryChange(country: any): void {
+    this.countryCode = country.dialCode;
   }
 }

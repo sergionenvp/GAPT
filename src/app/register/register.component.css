@@ -2,3 +2,6 @@
   margin-top: 10vh;
 }
 
+:host ::ng-deep .iti {
+  width: 90%;
+}

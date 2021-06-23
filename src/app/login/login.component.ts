@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import {AccountService} from '../account.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Email} from '../register/email.model';
+import {Sms} from './sms.model';
 
 interface Token {
   auth_token: string;
@@ -23,7 +24,6 @@ interface AuthMode {
 })
 export class LoginComponent implements OnInit {
   token: string;
-  phone: string;
   // This property controls 2-factor authentication options: 1-email, 2-picture, 3-phone, 4-disabled
   authMode: string;
 
@@ -80,9 +80,12 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/camera']);
               // Authentication mode is set to phone
             } else if (this.authMode === '3'){
-              // Get user phone number
-              this.phone = res.phone;
-              // call method send code to phone
+              const payLoad: Sms = {
+                body: 'Your verification code ',
+                toNum: res.phone
+              };
+              // Call method to send code to phone
+              this.accountService.getCodeSms(payLoad);
             }
           },
           () => {

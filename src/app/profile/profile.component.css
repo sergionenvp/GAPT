@@ -3,7 +3,7 @@
 }
 
 .input-auth {
-  width: 80%;
+  width: 90%;
   font: 14px Futura,Helvetica,sans-serif;
 }
 
@@ -14,5 +14,10 @@
 .form-check-label{
   font-weight: normal;
   padding-left: 5px;
+}
+
+:host ::ng-deep .iti {
+  width: 90%;
+  margin-left: 10px;
 }
 

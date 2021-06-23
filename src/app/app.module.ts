@@ -15,6 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { CameraComponent } from './camera/camera.component';
 import { WebcamModule } from 'ngx-webcam';
+import { Ng2TelInputModule } from 'ng2-tel-input';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { WebcamModule } from 'ngx-webcam';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    WebcamModule
+    WebcamModule,
+    Ng2TelInputModule
   ],
   providers: [CookieService, BnNgIdleService],
   bootstrap: [AppComponent]

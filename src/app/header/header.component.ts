@@ -19,12 +19,12 @@ export class HeaderComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    // Check if the user is already looged in
+    // Check if the user is already logged in
     const token = this.cookieService.get('pictureId');
     if (token) {
       this.isLoggedIn = true;
     }
-    // If the user is logged in, but is idle for 5 minutues,
+    // If the user is logged in, but is idle for 5 minutes,
     // the session will be automatically timed out and user will be logged out
     if (this.isLoggedIn) {
       this.bnIdle.startWatching(300).subscribe((res) => {

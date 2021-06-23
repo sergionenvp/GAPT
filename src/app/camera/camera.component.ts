@@ -68,6 +68,7 @@ export class CameraComponent implements OnInit {
         // Authentication method (still needs to be correctly connected to backend face recognition API)
       } else if (this.check === 1) {
         // the picture is sent to backend API for verification
+        // this.accountService.matchPicture(data);
         // const picCorrect = get true/false response from server on picture identification ?
         //   if (picCorrect) {
         //   this.accountService.getToken();

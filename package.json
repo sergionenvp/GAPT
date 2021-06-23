@@ -22,6 +22,8 @@
     "bn-ng-idle": "^1.0.1",
     "bootstrap": "^3.4.1",
     "guid-typescript": "^1.0.9",
+    "intl-tel-input": "^17.0.13",
+    "ng2-tel-input": "^2.3.0",
     "ngx-cookie-service": "^12.0.0",
     "ngx-webcam": "^0.3.2",
     "rxjs": "~6.6.0",
