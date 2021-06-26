@@ -15,6 +15,7 @@ interface Token {
 interface AuthMode {
   auth_mode: string;
   phone: string;
+  id: string;
 }
 
 @Component({
@@ -76,6 +77,7 @@ export class LoginComponent implements OnInit {
               this.accountService.getCode(payLoad);
               // Authentication mode is set to face recognition
             } else if (this.authMode === '2') {
+              this.accountService.userId = res.id;
               // Redirect to CameraComponent
               this.router.navigate(['/camera']);
               // Authentication mode is set to phone

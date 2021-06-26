@@ -23,6 +23,7 @@ export class AccountService{
   form: FormData;
   isLogged: boolean;
   check: number; // 0 is registration mode, 1 is authentication with face picture, 2 is changing profile picture
+  userId: string;
   // Endpoints to the backend
   baseUrl = 'http://127.0.0.1:8000/';
   emailUrl = this.baseUrl + 'accounts/email_view';
@@ -31,6 +32,7 @@ export class AccountService{
   loginUrl = this.baseUrl + 'auth/token/login/';
   logoutUrl = this.baseUrl + 'auth/token/logout/';
   userUrl = this.baseUrl + 'auth/users/me/';
+  uploadUrl = this.baseUrl + 'accounts/upload_view';
   faceRecUrl = this.baseUrl + 'accounts/first_eyes_auth';
   headers = new HttpHeaders({
     'Content-Type': 'application/json'
@@ -56,8 +58,7 @@ export class AccountService{
 
   getCodeSms(payLoad: Sms): void {
     this.http.post(this.smsUrl, payLoad).subscribe((response: Response) => {
-      this.router.navigate(['/auth']); this.code = +response.message; }, (error: Response) => {
-      this.emailSent = error.message;
+      this.router.navigate(['/auth']); this.code = +response.message; }, () => {
       Swal.fire('SMS not sent',
         'Something went wrong! Try again later',
         'error'); } );
@@ -134,6 +135,18 @@ export class AccountService{
         this.router.navigate(['/login']);
       }
     );
+  }
+
+  pictureUpload(userData) {
+    return this.http.post(this.uploadUrl, userData).subscribe(() => {
+      Swal.fire('Success',
+        'Picture sent to server!',
+        'success');
+      }, () => {
+      Swal.fire('Fail',
+        'Picture not sent to server',
+        'error');
+    });
   }
 
   pictureMatch(userData) {
