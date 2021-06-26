@@ -2,7 +2,6 @@ from accounts.response import HttpResponseCode, create_response
 from accounts.email import send_email
 from accounts.sms import send_msg
 from accounts.Eyes_recognition import logIn
-from accounts.Eyes_recognition import signUp
 from rest_framework.decorators import api_view
 from django.http import HttpResponse
 
@@ -37,10 +36,6 @@ def upload_view(request):
             return create_response(HttpResponseCode.failed, False, False)          
         
         
-@api_view(["GET"])
-def eyes_auth(request):
-    if request.method == "GET":
-        return logIn(request)
 
 
 

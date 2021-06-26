@@ -190,9 +190,9 @@ def identify(image):
     #--------------------------------------------
     return Response(str(id_), status=200)
 
-def logIn():
+def logIn(img):
     trainer()
-    return identify()
+    return identify(img)
 
 #def signUp(obj):
   #  personId = obj['personId']
