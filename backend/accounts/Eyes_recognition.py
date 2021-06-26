@@ -29,7 +29,7 @@ def trainer():
         for file in files:
             if file.endswith("jpg") or file.endswith("jpeg") or file.endswith("png"): #Recognize different types of images
                 path = os.path.join(root, file)
-                label = os.path.basename(os.path.dirname(path)).lower()
+                label = file
                 print(label)
                 if not label in label_ids: #Save the name of the images in a dictionary and also an id
                     label_ids[label] = current_id
@@ -124,7 +124,7 @@ def identify(image):
         roi_gray = gray[y:y+h,  x:x+w]
          #roi_color = frame[y:y+h, x:x+w]
         id_, conf = recognizer.predict(roi_gray)
-        if(conf >= 115):
+        if(conf >= 120):
             print(id_)
             print(labels[id_])
                 # Calculate how many times a person is detected by the AI
