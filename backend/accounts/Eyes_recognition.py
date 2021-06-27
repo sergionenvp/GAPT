@@ -15,7 +15,7 @@ from rest_framework import status
 
 def trainer():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__)) #Take the path of the directory the actual file 
-    image_dir = "backend/media/images" #Create path to the images folder
+    image_dir = os.path.join(BASE_DIR, "media/images")  #Create path to the images folder
 
     eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml') #Take the trained AI from the folder classifier that OpenCV framework provides.
     recognizer = cv2.face.LBPHFaceRecognizer_create() #Create the Local Binary Pattern Histogram
