@@ -88,6 +88,7 @@ def trainer():
 
 
 def identify(image):
+    print("1")
     # Take the trained AI from the folder classifier that OpenCV framework provides.
     eye_cascade = cv2.CascadeClassifier(
         cv2.data.haarcascades + '/haarcascade_eye.xml')
@@ -111,8 +112,13 @@ def identify(image):
     #Start measuring the time
     #start = time.time()
     #while cap.isOpened():  # While the camera is opened
+
     # Capture the image
-    frame = cv2.imread(image)  # Save the frame (image)
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__)) #Take the path of the directory the actual file 
+    image_dir = os.path.join(BASE_DIR, "image")  #Create path to the images folder
+    path = os.path.join(image_dir, image)  #Create path to the images folder
+    frame = cv2.imread(path)  # Save the frame (image)
+
      # Convert the frame into gray. (Helps to the recognition)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
       # Detects the eyes thanks to the framework OpenCV. It has alredy trianed AI to detect eyes. Returns a list of tuples with rectangles
@@ -188,7 +194,8 @@ def identify(image):
     #--------------------------------------------
     #Here there should be a query to the db to get the username from the user id
     #--------------------------------------------
-    return Response(str(id_), status=200)
+
+    return str(labels[id_])
 
 def logIn(img):
     trainer()

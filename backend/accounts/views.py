@@ -30,7 +30,7 @@ def upload_view(request):
             for chunk in upload.chunks():
                 dir.write(chunk)
             dir.close()
-            person = logIn(upload)
+            person = logIn(name)
             return create_response(HttpResponseCode.success, message=person)
         except:
             return create_response(HttpResponseCode.failed, False, False)          
